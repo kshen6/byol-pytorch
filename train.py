@@ -24,6 +24,7 @@ parser.add_argument('--image_folder', type=str, default='/scr/colinwei/data/tiny
 parser.add_argument('--batch_size', type=int, default=256, help='should try largest')
 parser.add_argument('--epochs', type=int, default=1000, help='epochs')
 parser.add_argument('--lr', type=float, default=3e-4, help='learning rate')
+parser.add_argument('--save')
 
 args = parser.parse_args()
 
@@ -51,7 +52,7 @@ class SelfSupervisedLearner(pl.LightningModule):
     def training_step(self, images, batch_idx):
         loss = self.forward(images)
         if batch_idx == 0:
-            torch.save(self.learner.state_dict(), 'ckpt2-' + str(self.i) + '.pt')
+            torch.save(self.learner.state_dict(), 'ckpt' + args.save + '-' + str(self.i) + '.pt')
             self.i += 1
         return {'loss': loss}
 
